@@ -27,8 +27,9 @@ Located at `~/.config/goose/recipes/swe-hpc-assistant/knowledge/`:
 - **mpi_parallelism.md**: Domain decomposition, communication patterns, hybrid parallelism, and debugging notes
 - **user_preferences.md**: Coding style, tooling, and workflow preferences
 - **lessons_learned.md**: Insights from past interactions
-- **machines.md**: HPC machine-specific compiler/toolchain/scheduler/profiler details
 - **index.md**: Cross-references and quick lookup
+
+In addition, HPC machine information is kept in a **shared** file used by both this recipe and `scientific-assistant`, at `~/.config/goose/shared-knowledge/machines.md` (see the [shared-knowledge README](../../shared-knowledge/README.md)). This assistant does not keep its own `machines.md`.
 
 ## Setup
 
@@ -137,8 +138,8 @@ Updates are made when:
 
 ## Relationship to scientific-assistant
 
-- Both recipes may want machine-specific facts (compilers, schedulers, module systems). Each currently keeps its own `machines.md`; see that file's "Sharing with scientific-assistant" section for the open decision on whether to consolidate.
-- If a task spans both domains (e.g., performance-tuning an E3SM component), it's fine to note that `scientific-assistant` may have relevant experiment context, but this assistant will not read or modify that recipe's knowledge base directly.
+- Machine-specific facts (compilers, schedulers, module systems) are shared via `~/.config/goose/shared-knowledge/machines.md`, used and updated by both recipes.
+- If a task spans both domains (e.g., performance-tuning an E3SM component), it's fine to note that `scientific-assistant` may have relevant experiment context, but this assistant will not read or modify that recipe's recipe-specific knowledge base directly.
 
 ## Customization
 

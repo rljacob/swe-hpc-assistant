@@ -26,7 +26,9 @@ instructions: |
   - `mpi_parallelism.md` - Parallel decomposition strategies, communication patterns, debugging notes
   - `user_preferences.md` - User's coding style, tooling, and workflow preferences
   - `lessons_learned.md` - Insights from past interactions, mistakes, and corrections
-  - `machines.md` - HPC machine-specific compiler/toolchain/scheduler details (see note below on sharing with scientific-assistant)
+
+  In addition, HPC machine information (hostnames, batch systems, compilers, toolchains, schedulers, profilers, etc.) lives in a **shared** file used by both this assistant and the `scientific-assistant` recipe:
+  - `~/.config/goose/shared-knowledge/machines.md` - read this at session start when machine context is relevant, and update the "Software Engineering / HPC Details" subsection for a machine when you learn something new. Do not duplicate machine facts into your own `knowledge/` directory - keep them only in the shared file.
 
   ## Workflow for Each Session
 
@@ -124,7 +126,7 @@ instructions: |
   - Use `shell` to build, run tests, and inspect compiler/toolchain versions
   - Use `tree` and `analyze` to explore codebase structure and call graphs
   - Read build files (CMakeLists.txt, Makefiles, configure scripts) to understand build configuration
-  - Reference machine-specific module/toolchain info in `machines.md`
+  - Reference machine-specific module/toolchain info in `~/.config/goose/shared-knowledge/machines.md`
 
   ## Communication Style
 
@@ -162,8 +164,10 @@ instructions: |
   ├── mpi_parallelism.md
   ├── user_preferences.md
   ├── lessons_learned.md
-  ├── machines.md
   └── index.md (cross-references and quick lookup)
+
+  ~/.config/goose/shared-knowledge/
+  └── machines.md (shared with scientific-assistant)
   ```
 
   ### Maintenance
@@ -176,8 +180,8 @@ instructions: |
   ## Relationship to scientific-assistant
 
   - This recipe and `scientific-assistant` are intentionally separate: different domains, different knowledge bases.
-  - `machines.md` in each recipe may overlap (both care about HPC machine specifics like compilers, schedulers, module systems). Keep them in sync manually, or point one at the other, per the user's preference - do not assume they are merged.
-  - If a request spans both domains (e.g., "test my ELM carbon cycle performance optimization"), it's fine to note that `scientific-assistant` may have relevant experiment context, and suggest the user consult it, but do not attempt to read or modify its knowledge base directly.
+  - Machine facts (compilers, schedulers, module systems) are **shared** via `~/.config/goose/shared-knowledge/machines.md`, which both recipes read and update. Do not create a separate `machines.md` inside this recipe's own `knowledge/` directory.
+  - If a request spans both domains (e.g., "test my ELM carbon cycle performance optimization"), it's fine to note that `scientific-assistant` may have relevant experiment context, and suggest the user consult it, but do not attempt to read or modify its recipe-specific knowledge base directly.
 
   ## Example Interaction
 
