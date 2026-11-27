@@ -45,3 +45,12 @@ Created as part of swe-hpc-assistant scaffolding.
 - `SMS_D_Vmct` (MCT driver) passes all phases.
 - Don't `git add` conflicted files without asking (marks conflict resolved). Use $HOME not ~ in edit-tool paths.
 **Follow-up:** Restore the exclude-libs workaround or get MOAB rebuilt against Trilinos 17.0.0/gcc 11.2.0.
+
+## [2026-11-25] PEM.T62_oQU240.COMEGA-IAF.mappy_gnu SETUP FAIL: importlib.resources on namespace pkg (py3.9)
+
+**Context:** E3SM next-branch Jenkins on mappy (system python 3.9). Omega buildnml (`components/omega/cime_config/omega_buildnml/read_write.py::_read_packaged_yaml_file`) calls `resources.files("omega_buildnml.data")`.
+**Key Information:**
+- `omega_buildnml/data/` has no `__init__.py` -> implicit namespace package -> `__spec__.origin is None`. Python 3.9's `importlib.resources.files` fallback does `pathlib.Path(spec.origin)` -> `TypeError: expected str, bytes or os.PathLike object, not NoneType`. Works on 3.10+ (namespace support added), so it passes on dev machines.
+- README claims 3.9+ support, so this is a real bug, introduced in d5c9ec2658 "Refactor buildnml to support external configs".
+- Fixes: add empty `data/__init__.py`, or use `resources.files("omega_buildnml").joinpath("data").joinpath(name)` (3.9 joinpath takes one arg), or `Path(__file__).parent / "data" / name`.
+- Affects all Omega compsets on py3.9 machines, not test-type specific.
